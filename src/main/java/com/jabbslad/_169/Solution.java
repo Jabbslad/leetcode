@@ -1,19 +1,17 @@
 package com.jabbslad._169;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class Solution {
     public int majorityElement(int[] nums) {
+        // Boyer-Moore Voting Algorithm
+        int count = 0;
+        int candidate = 0;
 
-        Map<Integer, Integer> seen = new HashMap<>();
-
-        for (int i = 0; i < nums.length; i++) {
-            int res = seen.compute(nums[i], (k, v) -> v == null ? 1 : v + 1);
-            if (res > nums.length / 2)
-                return nums[i];
+        for (int num : nums) {
+            if (count == 0)
+                candidate = num;
+            count += (num == candidate) ? 1 : -1;
         }
-        return -1;
+        return candidate;
     }
 
     public static void main(String[] args) {
