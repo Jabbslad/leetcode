@@ -1,5 +1,6 @@
 package com.jabbslad._590;
 
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,20 +22,21 @@ class Node {
 };
 
 public class Solution {
-    public void postorder(Node root, List<Integer> result) {
-        if (root == null)
-            return;
-
-        for (Node child : root.children)
-            postorder(child, result);
-
-        result.add(root.val);
-    }
-
 
     public List<Integer> postorder(Node root) {
-        List<Integer> result = new LinkedList<>();
-        postorder(root, result);
+        LinkedList<Integer> result = new LinkedList<>();
+        Deque<Node> stack = new LinkedList<>();
+        stack.add(root);
+
+        while (!stack.isEmpty()) {
+            int size = stack.size();
+            for (int i = 0; i < size; i++) {
+                Node curr = stack.poll();
+                result.addFirst(curr.val);
+                for (Node child : curr.children)
+                    stack.push(child);
+            }
+        }
         return result;
     }
 }
