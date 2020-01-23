@@ -1,24 +1,24 @@
 package com.jabbslad._1122;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class Solution {
     public int[] relativeSortArray(int[] arr1, int[] arr2) {
-        int[] counts = new int[1001];
+        LinkedHashMap<Integer, Integer> counts = new LinkedHashMap<>();
         for (int x : arr1)
-            counts[x]++;
+            counts.compute(x, (k, v) -> v == null ? 0 : v + 1);
 
         int i = 0;
         for (int x : arr2) {
-            while (counts[x] > 0) {
-                arr1[i++] = x;
-                counts[x]--;
-            }
+            int v = counts.remove(x);
+            for(int j = 0; j<v; j++)
+                arr1[i++] = v;
         }
 
-        for (int j = 0; j < counts.length; j++) {
-            while (counts[j] > 0) {
-                arr1[i++] = j;
-                counts[j]--;
-            }
+        for(Map.Entry<Integer, Integer> pair : counts.entrySet()) {
+            for(int j = 0; j<pair.getValue(); j++)
+                arr1[i++] = pair.getValue();
         }
         return arr1;
     }
